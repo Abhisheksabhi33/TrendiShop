@@ -55,7 +55,7 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const fixNavbar = () => {
-     if(window.scrollY > 0){
+     if(window.scrollY > 180){
         setScrollPage(true);
      }
 
@@ -65,6 +65,7 @@ const Header = () => {
   }
   
   window.addEventListener("scroll" , fixNavbar);
+
 
 
   const navigate = useNavigate();

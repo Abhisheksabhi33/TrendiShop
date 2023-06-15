@@ -8,45 +8,58 @@ import {
   CLEAR_CART,
   DECREASE_CART,
   REMOVE_FROM_CART,
+  SAVE_URL,
   selectCartItems,
   selectCartTotalAmount,
   selectCartTotalQuantity,
 } from "../../redux/slice/cartSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaTrashAlt } from "react-icons/fa";
 import Card from "../../components/card/Card";
-
-
-
-
+import { selectIsLoggedIn } from "../../redux/slice/authSlice";
 
 const Cart = () => {
   const cartItems = useSelector(selectCartItems);
   const cartTotalAmount = useSelector(selectCartTotalAmount);
   const cartTotalQuantity = useSelector(selectCartTotalQuantity);
 
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
   const increaseCart = (cart) => {
-     dispatch(ADD_TO_CART(cart))
+    dispatch(ADD_TO_CART(cart));
   };
 
   const decreaseCart = (cart) => {
     dispatch(DECREASE_CART(cart));
   };
 
-  const removeFromCart = (cart) =>{
-     dispatch(REMOVE_FROM_CART(cart));
-  }
+  const removeFromCart = (cart) => {
+    dispatch(REMOVE_FROM_CART(cart));
+  };
 
-  const clearCart = () =>{
-     dispatch(CLEAR_CART());
-  }
+  const clearCart = () => {
+    dispatch(CLEAR_CART());
+  };
 
   useEffect(() => {
-     dispatch(CALCULATE_SUBTOTAL())
-     dispatch(CALCULATE_TOTAL_QUANTITY())
+    dispatch(CALCULATE_SUBTOTAL());
+    dispatch(CALCULATE_TOTAL_QUANTITY());
+    dispatch(SAVE_URL(""));
   }, [dispatch, cartItems]);
+
+  const url = window.location.href;
+
+  const checkout = () => {
+    if (isLoggedIn) {
+      navigate("/checkout-details");
+    } else {
+      dispatch(SAVE_URL(url));
+      navigate("/login");
+    }
+  };
 
   return (
     <section>
@@ -81,30 +94,48 @@ const Cart = () => {
                       <td>{index + 1}</td>
                       <td>
                         <p>
-                          <b>{name}</b>
+                          <Link to={`/product-details/${id}`}>
+                            <b>{name}</b>
+                          </Link>
                         </p>
 
-                        <img
-                          src={imageURL}
-                          alt={name}
-                          style={{ width: "80px" }}
-                        />
+                        <Link to={`/product-details/${id}`}>
+                          <img
+                            src={imageURL}
+                            alt={name}
+                            style={{ width: "80px" }}
+                          />
+                        </Link>
                       </td>
                       <td>{price}</td>
                       <td>
                         <div className={styles.count}>
-                          <button className="--btn" onClick={() => decreaseCart(cart)} >-</button>
+                          <button
+                            className="--btn"
+                            onClick={() => decreaseCart(cart)}
+                          >
+                            -
+                          </button>
 
                           <p>
                             <b>{cartQuantity}</b>
                           </p>
 
-                          <button className="--btn" onClick={() => increaseCart(cart)} >+</button>
+                          <button
+                            className="--btn"
+                            onClick={() => increaseCart(cart)}
+                          >
+                            +
+                          </button>
                         </div>
                       </td>
                       <td>{(price * cartQuantity).toFixed(2)}</td>
                       <td className={styles.icons}>
-                        <FaTrashAlt size={19} color="red" onClick={() => removeFromCart(cart)} />
+                        <FaTrashAlt
+                          size={19}
+                          color="red"
+                          onClick={() => removeFromCart(cart)}
+                        />
                       </td>
                     </tr>
                   );
@@ -113,7 +144,9 @@ const Cart = () => {
             </table>
 
             <div className={styles.summary}>
-              <button className="--btn --btn-danger" onClick={clearCart} >Clear Cart</button>
+              <button className="--btn --btn-danger" onClick={clearCart}>
+                Clear Cart
+              </button>
 
               <div className={styles.checkout}>
                 <div>
@@ -123,7 +156,10 @@ const Cart = () => {
                 <br />
 
                 <Card cardClass={styles.card}>
-                  <p > <b>  {`Cart item(s) :  ${cartTotalQuantity}`}</b></p>
+                  <p>
+                    {" "}
+                    <b> {`Cart item(s) :  ${cartTotalQuantity}`}</b>
+                  </p>
 
                   <div className={styles.text}>
                     <h4>Subtotal : </h4>
@@ -132,7 +168,10 @@ const Cart = () => {
 
                   <p>Tax and shipping calculated at checkout</p>
 
-                  <button className="--btn --btn-primary --btn-block">
+                  <button
+                    className="--btn --btn-primary --btn-block"
+                    onClick={checkout}
+                  >
                     {" "}
                     Checkout{" "}
                   </button>

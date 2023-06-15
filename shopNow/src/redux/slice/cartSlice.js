@@ -11,6 +11,7 @@ const initialState = {
   cartTotalAmount: localStorage.getItem("cartTotalAmount")
     ? JSON.parse(localStorage.getItem("cartTotalAmount"))
     : 0,
+  previousURL: "",
 };
 
 const cartSlice = createSlice({
@@ -79,80 +80,86 @@ const cartSlice = createSlice({
 
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
-    
-    REMOVE_FROM_CART(state, action){
+
+    REMOVE_FROM_CART(state, action) {
       const newCartItem = state.cartItems.filter(
         (item) => item.id !== action.payload.id
       );
 
-        state.cartItems = newCartItem;
+      state.cartItems = newCartItem;
 
-        toast.success(`${action.payload.name} removed from the cart`, {
-          position: "top-left",
-        });
-       
-        localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
-
-    },
-
-    CLEAR_CART(state, action){
-      state.cartItems = [];
- 
-      toast.info( `Cart has been Cleared`, {
+      toast.success(`${action.payload.name} removed from the cart`, {
         position: "top-left",
       });
-     
+
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
-
     },
 
-    CALCULATE_SUBTOTAL(state, action){
-         const array = [];
-         state.cartItems.map((item) => {
-            const {price, cartQuantity} = item;
-            const cartItemAmount = price*cartQuantity;
-            
-            return array.push(cartItemAmount);
-          
-         })
+    CLEAR_CART(state, action) {
+      state.cartItems = [];
 
-         let totalAmount =0;
-         
-         if(array.length>0){
-          totalAmount = array.reduce((a,b) =>{
-             return a+b;
-         })
+      toast.info(`Cart has been Cleared`, {
+        position: "top-left",
+      });
 
-        }
-
-         state.cartTotalAmount = totalAmount;
+      localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
 
-    CALCULATE_TOTAL_QUANTITY(state, action){
+    CALCULATE_SUBTOTAL(state, action) {
       const array = [];
       state.cartItems.map((item) => {
-         const { cartQuantity} = item;
-         const quantity = cartQuantity;
-         
-         return array.push(quantity);
-       
-      })
+        const { price, cartQuantity } = item;
+        const cartItemAmount = price * cartQuantity;
 
-      const totalQuantity = array.reduce((a,b) =>{
-          return a+b;
+        return array.push(cartItemAmount);
+      });
+
+      let totalAmount = 0;
+
+      if (array.length > 0) {
+        totalAmount = array.reduce((a, b) => {
+          return a + b;
+        });
+      }
+
+      state.cartTotalAmount = totalAmount;
+    },
+
+    CALCULATE_TOTAL_QUANTITY(state, action) {
+      const array = [];
+      state.cartItems.map((item) => {
+        const { cartQuantity } = item;
+        const quantity = cartQuantity;
+
+        return array.push(quantity);
+      });
+
+      const totalQuantity = array.reduce((a, b) => {
+        return a + b;
       }, 0);
 
       state.cartTotalQuantity = totalQuantity;
-    }
+    },
 
-
+    SAVE_URL(state, action) {
+      state.previousURL = action.payload;
+    },
   },
 });
 
-export const { ADD_TO_CART, DECREASE_CART , REMOVE_FROM_CART , CLEAR_CART, CALCULATE_SUBTOTAL, CALCULATE_TOTAL_QUANTITY} = cartSlice.actions;
+export const {
+  ADD_TO_CART,
+  DECREASE_CART,
+  REMOVE_FROM_CART,
+  CLEAR_CART,
+  CALCULATE_SUBTOTAL,
+  CALCULATE_TOTAL_QUANTITY,
+  SAVE_URL,
+} = cartSlice.actions;
 
 export const selectCartItems = (state) => state.cart.cartItems;
 export const selectCartTotalQuantity = (state) => state.cart.cartTotalQuantity;
 export const selectCartTotalAmount = (state) => state.cart.cartTotalAmount;
+export const selectPreviousURL = (state) => state.cart.previousURL;
 
 export default cartSlice.reducer;

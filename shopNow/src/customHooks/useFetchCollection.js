@@ -21,8 +21,6 @@ const useFetchCollection = (
           ...doc.data(),
         }));
 
-        console.log(allData);
-
         setData(allData);
         setIsLoading(false);
       });
