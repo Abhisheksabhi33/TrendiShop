@@ -41,7 +41,7 @@ const ProductItem = ({ product, grid, id, name, price, desc, imageURL }) => {
        
        <div className= {styles.details}>
         
-        <p>{`$${price}`}</p>
+        <p>&#8377; {`${price}`}</p>
         <Link to = {`/product-details/${id}`}>
         <h4>{shortenText(name, 18)}</h4>
         </Link>

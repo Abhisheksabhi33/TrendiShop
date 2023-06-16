@@ -34,7 +34,7 @@ function CheckoutSummary() {
 
               <div className={styles.text}>
                 <h4> Subtotal : </h4>
-               <h3>{`$${totalAmount.toFixed(2)}`}</h3>
+               <h3>&#8377; {`${totalAmount.toFixed(2)}`}</h3>
               </div>
 
               {cartItems.map((item, index) => {
@@ -48,9 +48,9 @@ function CheckoutSummary() {
 
                     <p>Quantity : {cartQuantity} </p>
 
-                    <p>Unit Price : {price} </p>
+                    <p>Unit Price : &#8377; {price} </p>
 
-                    <p>Set Price : {price * cartQuantity} </p>
+                    <p>Set Price : &#8377; {price * cartQuantity} </p>
                   </Card>
                 );
               })}

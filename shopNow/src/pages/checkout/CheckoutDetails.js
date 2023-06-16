@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import styles from "./CheckoutDetails.module.scss";
 import Card from "../../components/card/Card";
 import { CountryDropdown } from "react-country-region-selector";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   SAVE_BILLING_ADDRESS,
   SAVE_SHIPPING_ADDRESS,
 } from "../../redux/slice/checkoutSlice";
 import { useNavigate } from "react-router-dom";
 import CheckoutSummary from "../../components/checkoutSummary/CheckoutSummary";
+import { selectCartItems } from "../../redux/slice/cartSlice";
+
 
 const initialAddressState = {
   name: "",
@@ -33,6 +35,9 @@ const CheckoutDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const cartItems = useSelector(selectCartItems);
+
+
   const handleShipping = (e) => {
     const { name, value } = e.target;
     setShippingAddress({
@@ -49,6 +54,7 @@ const CheckoutDetails = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+
     dispatch(SAVE_SHIPPING_ADDRESS(shippingAddress));
     dispatch(SAVE_BILLING_ADDRESS(billingAddress));
 
@@ -56,7 +62,7 @@ const CheckoutDetails = () => {
   };
 
   const handleSameAs = (e) => {
-    const { name, checked } = e.target;
+    const { checked } = e.target;
     if (checked) {
       setBillingAddress({
         ...shippingAddress,
@@ -273,7 +279,13 @@ const CheckoutDetails = () => {
                 onChange={(e) => handleBilling(e)}
               />
 
-              <button className="--btn --btn-primary" type="submit">
+              <button 
+              className="--btn --btn-primary"
+               type="submit"
+                
+               disabled ={ !billingAddress || !shippingAddress || !cartItems}
+
+               >
                 Proceed To Checkout
               </button>
             </Card>

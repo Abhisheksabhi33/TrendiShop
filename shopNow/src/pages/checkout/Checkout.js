@@ -1,13 +1,101 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  CALCULATE_SUBTOTAL,
+  CALCULATE_TOTAL_QUANTITY,
+  selectCartItems,
+  selectCartTotalAmount,
+} from "../../redux/slice/cartSlice";
+import { selectEmail } from "../../redux/slice/authSlice";
+import {
+  selectShippingAddress,
+  selectBillingAddress,
+} from "../../redux/slice/checkoutSlice";
+import { toast } from "react-toastify";
+import CheckoutForm from "../../components/checkoutForm/CheckoutForm";
+import { useNavigate } from "react-router-dom";
+
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK);
 
 const Checkout = () => {
-  return (
-    <div>
-      <h2>
-      Checkout
-      </h2>
-    </div>
-  )
-}
+  const [message, setMessage] = useState("Initializing Checkout...");
+  const [clientSecret, setClientSecret] = useState("");
 
-export default Checkout
+  const cartItems = useSelector(selectCartItems);
+  const totalAmount = useSelector(selectCartTotalAmount);
+  const customerEmail = useSelector(selectEmail);
+  const shippingAddress = useSelector(selectShippingAddress);
+  const billingAddress = useSelector(selectBillingAddress);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const description = `shopNow payment: email: ${customerEmail}, Amount: ${totalAmount}`;
+
+  useEffect(() => {
+    dispatch(CALCULATE_SUBTOTAL());
+    dispatch(CALCULATE_TOTAL_QUANTITY());
+  }, [dispatch, cartItems]);
+
+  useEffect(() => {
+    
+    {cartItems.length === 0 ? navigate("/cart") : (
+
+    fetch("http://localhost:4242/create-payment-intent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        items: cartItems,
+        userEmail: customerEmail,
+        shipping: shippingAddress,
+        billing: billingAddress,
+        description,
+      }),
+    })
+      .then(async (res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        const json = await res.json();
+        return await Promise.reject(json);
+      })
+      .then((data) => {
+        setClientSecret(data.clientSecret);
+      })
+      .catch((error) => {
+        setMessage("Failed to initialize Checkout");
+        toast.error("Something went wrong!");
+      })
+
+    )}
+
+  }, []);
+
+  const appearance = {
+    theme: "stripe",
+
+  };
+
+  const options = {
+    clientSecret,
+    appearance,
+  };
+
+  return (
+    <>
+      <section>
+        <div className="container">{!clientSecret && <h3>{message}</h3>}</div>
+      </section>
+      {clientSecret && (
+        <Elements options={options} stripe={stripePromise}>
+          <CheckoutForm />
+        </Elements>
+      )}
+    </>
+  );
+};
+
+export default Checkout;

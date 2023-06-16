@@ -107,7 +107,7 @@ const Cart = () => {
                           />
                         </Link>
                       </td>
-                      <td>{price}</td>
+                      <td>&#8377; {price}</td>
                       <td>
                         <div className={styles.count}>
                           <button
@@ -129,7 +129,7 @@ const Cart = () => {
                           </button>
                         </div>
                       </td>
-                      <td>{(price * cartQuantity).toFixed(2)}</td>
+                      <td>&#8377; {(price * cartQuantity).toFixed(2)}</td>
                       <td className={styles.icons}>
                         <FaTrashAlt
                           size={19}
@@ -163,7 +163,7 @@ const Cart = () => {
 
                   <div className={styles.text}>
                     <h4>Subtotal : </h4>
-                    <h3>{`$${cartTotalAmount.toFixed(2)}`}</h3>
+                    <h3>&#8377; {`${cartTotalAmount.toFixed(2)}`}</h3>
                   </div>
 
                   <p>Tax and shipping calculated at checkout</p>
