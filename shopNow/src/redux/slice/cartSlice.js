@@ -125,7 +125,7 @@ const cartSlice = createSlice({
       state.cartTotalAmount = totalAmount;
     },
 
-    CALCULATE_TOTAL_QUANTITY(state, action) {
+    CALCULATE_TOTAL_QUANTITY(state) {
       const array = [];
       state.cartItems.map((item) => {
         const { cartQuantity } = item;

@@ -23,7 +23,7 @@ const ProductList = ({ products }) => {
   // Pagination states
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage, setProductsPerPage] = useState(9);
+  const [productsPerPage] = useState(9);
 
   // Get current products
 

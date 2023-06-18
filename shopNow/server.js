@@ -7,6 +7,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const path = require("path");
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("build"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "build", "index.html"));
+  });
+}
+
 app.get("/", (req, res) => {
   res.send("welcome to shopNow!");
 });
@@ -28,8 +37,8 @@ const calculateOrderAmount = (items) => {
 };
 
 app.post("/create-payment-intent", async (req, res) => {
-    const { items, shipping, description } = req.body;
-    
+  const { items, shipping, description } = req.body;
+
   const paymentIntent = await stripe.paymentIntents.create({
     amount: calculateOrderAmount(items),
     currency: "inr",
@@ -44,7 +53,6 @@ app.post("/create-payment-intent", async (req, res) => {
         city: shipping.city,
         country: shipping.country,
         postal_code: shipping.postal_code,
-        
       },
       name: shipping.name,
       phone: shipping.phone,

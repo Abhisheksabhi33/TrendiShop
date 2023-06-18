@@ -27,7 +27,7 @@ const useFetchDocument = (collectionName, documentID) => {
 
       useEffect(() => {
         getDocument();
-      }, []);
+      }, [ collectionName, documentID]);
 
 
         return { document };

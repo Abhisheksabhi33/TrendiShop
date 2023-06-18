@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styles from "./OrderDetails.module.scss";
 import { Link, useParams } from "react-router-dom";
-import useFetchDocument from "../../customHooks/useFetchDocument";
-import spinnerImg from "../../assets/spinner.jpg";
+import useFetchDocument from "../../../customHooks/useFetchDocument";
+import spinnerImg from "../../../assets/spinner.jpg";
+import ChangeOrderStatus from "../changeOrderStatus/ChangeOrderStatus";
 
 const OrderDetails = () => {
   const [order, setOrder] = useState(null);
@@ -14,14 +15,13 @@ const OrderDetails = () => {
     setOrder(document);
   }, [document]);
 
-
   return (
-    <section>
-      <div className={`container ${styles.table}`}>
+    <>
+      <div className={styles.table}>
         <h2> Order Details </h2>
 
         <div>
-          <Link to="/order-history">&larr; Go Back </Link>
+          <Link to="/admin/orders">&larr; Go Back </Link>
         </div>
 
         <br />
@@ -35,11 +35,20 @@ const OrderDetails = () => {
             </p>
 
             <p>
-              <b> Order Amount :</b>  &#8377; {order.orderAmount}
+              <b> Order Amount :</b> &#8377; {order.orderAmount}
             </p>
 
             <p>
               <b> Order Status </b> {order.orderStatus}
+            </p>
+
+            <p>
+              <b> Shipping Address </b>
+              <br />
+              <b>Address :</b> {order.shippingAddress.line1},{" "}
+              {order.shippingAddress.line2}, {order.shippingAddress.city},{" "}
+              {order.shippingAddress.state}, {order.shippingAddress.country},{" "}
+              {order.shippingAddress.postal_code}
             </p>
 
             <br />
@@ -52,7 +61,7 @@ const OrderDetails = () => {
                   <th>Price</th>
                   <th>Quantity</th>
                   <th>Total</th>
-                  <th>Action</th>
+               
                 </tr>
               </thead>
               <tbody>
@@ -67,24 +76,17 @@ const OrderDetails = () => {
                       <td>
                         <p>
                           <b>{name}</b>
-                          </p>
-                          <img
-                            src={imageURL}
-                            alt={name}
-                            style={{ width: "70px" }}
-                          />
-
+                        </p>
+                        <img
+                          src={imageURL}
+                          alt={name}
+                          style={{ width: "70px" }}
+                        />
                       </td>
                       <td>&#8377; {price}</td>
                       <td>{cartQuantity}</td>
                       <td>&#8377; {(price * cartQuantity).toFixed(2)}</td>
-                      <td className={styles.icons}>
-                        <button style={{padding: ".35rem"}} className="--btn --btn-primary">
-                          <Link to={`/review-product/${id}`}>
-                            Review Product
-                          </Link>
-                        </button>
-                      </td>
+                     
                     </tr>
                   );
                 })}
@@ -92,8 +94,13 @@ const OrderDetails = () => {
             </table>
           </>
         )}
+        
+
+        <ChangeOrderStatus order={order}  id={id} />
+
+
       </div>
-    </section>
+    </>
   );
 };
 

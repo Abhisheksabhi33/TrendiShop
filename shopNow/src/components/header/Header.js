@@ -13,7 +13,7 @@ import {
   REMOVE_ACTIVE_USER,
 } from "../../redux/slice/authSlice";
 import ShowOnLogin, { ShowOnLogout } from "../hiddenLink/hiddenLink";
-import AdminOnlyRoute, { AdminOnlyLink } from "../adminOnlyRoute/AdminOnlyRoute";
+import  { AdminOnlyLink } from "../adminOnlyRoute/AdminOnlyRoute";
 import { CALCULATE_TOTAL_QUANTITY, selectCartTotalQuantity } from "../../redux/slice/cartSlice";
 
 
@@ -37,6 +37,7 @@ const Header = () => {
   const [scrollPage, setScrollPage] = useState(false);
 
   const cartTotalQuantity = useSelector(selectCartTotalQuantity);
+  const dispatch = useDispatch();
 
   const cart = (
     <span className={styles.cart}>
@@ -50,9 +51,8 @@ const Header = () => {
 
   useEffect(() =>{
       dispatch(CALCULATE_TOTAL_QUANTITY())
-  }, [])
+  }, [ dispatch, cartTotalQuantity])
 
-  const dispatch = useDispatch();
 
   const fixNavbar = () => {
      if(window.scrollY > 180){

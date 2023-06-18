@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./ProductDetails.module.scss";
 import { Link, useParams } from "react-router-dom";
-import { db } from "../../../firebase/config";
-import { doc, getDoc } from "firebase/firestore";
-import { toast } from "react-toastify";
 import spinnerImg from "../../../assets/spinner.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -13,8 +10,10 @@ import {
   selectCartItems,
 } from "../../../redux/slice/cartSlice";
 import useFetchDocument from "../../../customHooks/useFetchDocument";
-
-
+import useFetchCollection from "../../../customHooks/useFetchCollection";
+import Card from "../../card/Card";
+import StarsRating from "react-star-rate";
+import { FaUserCircle } from "react-icons/fa";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -23,10 +22,13 @@ const ProductDetails = () => {
   const dispatch = useDispatch();
 
   const { document } = useFetchDocument("products", id);
+  const { data } = useFetchCollection("reviews");
 
   useEffect(() => {
     setProduct(document);
   }, [document]);
+
+  const filteredReviews = data.filter((review) => review.productId === id);
 
   const cartItems = useSelector(selectCartItems);
 
@@ -35,8 +37,6 @@ const ProductDetails = () => {
   const isAdded = cartItems.findIndex((cart) => {
     return cart.id === id;
   });
-
-  
 
   const addToCart = (product) => {
     dispatch(ADD_TO_CART(product));
@@ -107,6 +107,52 @@ const ProductDetails = () => {
             </div>
           </>
         )}
+
+        <Card cardClass={styles.card}>
+          <h3>Product Reviews</h3>
+          <div>
+            {filteredReviews.length === 0 ? (
+              <p>No reviews yet</p>
+            ) : (
+              <>
+                {filteredReviews.map((r, index) => {
+                  const { rate, review, reviewDate, userName } = r;
+
+                  return (
+                    <div
+                      style={{ margin: "1.5rem" }}
+                      key={index}
+                      className={styles.review}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          marginLeft: "-12px",
+                          marginBottom: "-20px",
+                        }}
+                      >
+                        <FaUserCircle
+                          size={34}
+                          style={{ margin: "12px", color: "orangered" }}
+                        />
+                        <h4 style={{ margin: "20px", marginLeft: "-7px" }}>
+                          {userName}
+                        </h4>
+                      </div>
+                      <div style={{ display: "block", marginLeft: "2.4rem" }}>
+                        <StarsRating value={rate} />
+                        <p>{review}</p>
+                        <span>
+                          <b>{reviewDate}</b>
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+            )}
+          </div>
+        </Card>
       </div>
     </section>
   );

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   PaymentElement,
-  LinkAuthenticationElement,
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
@@ -23,7 +22,6 @@ import { Timestamp, addDoc, collection } from "firebase/firestore";
 import { db } from "../../firebase/config";
 
 const CheckoutForm = () => {
-  const [email, setEmail] = useState("");
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const stripe = useStripe();
@@ -73,6 +71,7 @@ const CheckoutForm = () => {
       addDoc(collection(db, "orders"), orderConfig);
 
       dispatch(CLEAR_CART());
+      navigate("/checkout-success");
       toast.success("Order Placed Successfully");
     } catch (error) {
       toast.error(error.message);

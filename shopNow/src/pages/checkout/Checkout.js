@@ -72,7 +72,7 @@ const Checkout = () => {
 
     )}
 
-  }, []);
+  }, [ cartItems, customerEmail, shippingAddress, billingAddress, navigate]);
 
   const appearance = {
     theme: "stripe",
