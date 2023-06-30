@@ -1,5 +1,7 @@
-<h1>E-Commerce Project</h1><br>
-This is an E-commerce project built with the MERN stack and SCSS for styling. This project has been created as part of the web development learning process and showcases the use of various technologies and tools to create a full-fledged e-commerce website.<br>
+<h1>E-Commerce Project</h1>
+<br>
+This is an E-commerce project built with the MERN stack and SCSS for styling. This project has been created as part of the web development learning process and showcases the use of various technologies and tools to create a full-fledged e-commerce website.
+<br>
 
 <h1>Table of Contents</h1>
 <h3>Features</h3>
@@ -14,7 +16,7 @@ This is an E-commerce project built with the MERN stack and SCSS for styling. Th
 <h2>Features</h2>
 <ul>
   <li>User authentication and authorization</li>
-  <li>Product catalog with search, filter and sorting options</li>
+  <li>Product catalog with search, filter, and sorting options</li>
   <li>Shopping cart</li>
   <li>Checkout process with payment integration</li>
   <li>User profile with order history</li>
@@ -23,7 +25,7 @@ This is an E-commerce project built with the MERN stack and SCSS for styling. Th
 
 <h2>Technologies Used</h2>
 <ul>
-  <li>MongoDB</li>
+  <li>Firebase (Realtime Database and Authentication)</li>
   <li>Express.js</li>
   <li>React.js</li>
   <li>Node.js</li>
@@ -40,7 +42,13 @@ This is an E-commerce project built with the MERN stack and SCSS for styling. Th
   <li>Install the dependencies by running <code>npm install</code> in the terminal.</li>
   <li>Set up environment variables by creating a <code>.env</code> file in the root directory and adding the following variables:
     <ul>
-      <li><code>MONGO_URI</code>: MongoDB connection URI</li>
+      <li><code>FIREBASE_API_KEY</code>: Your Firebase API key</li>
+      <li><code>FIREBASE_AUTH_DOMAIN</code>: Your Firebase auth domain</li>
+      <li><code>FIREBASE_DATABASE_URL</code>: Your Firebase Realtime Database URL</li>
+      <li><code>FIREBASE_PROJECT_ID</code>: Your Firebase project ID</li>
+      <li><code>FIREBASE_STORAGE_BUCKET</code>: Your Firebase storage bucket</li>
+      <li><code>FIREBASE_MESSAGING_SENDER_ID</code>: Your Firebase messaging sender ID</li>
+      <li><code>FIREBASE_APP_ID</code>: Your Firebase app ID</li>
       <li><code>JWT_SECRET</code>: JWT secret key</li>
       <li><code>STRIPE_SECRET_KEY</code>: Stripe secret key</li>
     </ul>
