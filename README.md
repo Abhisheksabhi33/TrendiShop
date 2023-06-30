@@ -23,6 +23,26 @@ This is an E-commerce project built with the MERN stack and SCSS for styling. Th
   <li>Admin dashboard to manage products, orders, and users</li>
 </ul>
 
+
+![trendishop-0](https://github.com/Abhisheksabhi33/TrendiShop/assets/87107030/e635defd-1970-4f3f-a035-f65e9a10e15c)
+
+![trendiShop-1](https://github.com/Abhisheksabhi33/TrendiShop/assets/87107030/a06723a7-c8f5-4d38-a68b-748461c89dd2)
+
+![trendishop-2](https://github.com/Abhisheksabhi33/TrendiShop/assets/87107030/d4864063-738c-4e6d-a897-31efdbc61e0e)
+
+![trendishop-3](https://github.com/Abhisheksabhi33/TrendiShop/assets/87107030/162fb8a6-c696-4686-a350-ad76a48e8bc2)
+
+![trendishop-4](https://github.com/Abhisheksabhi33/TrendiShop/assets/87107030/320dba48-78ec-4c02-aa2c-1123188e65e7)
+
+![trendishop-5](https://github.com/Abhisheksabhi33/TrendiShop/assets/87107030/dddfb986-a091-468c-86c3-79a239bb628f)
+
+![trendishop-6](https://github.com/Abhisheksabhi33/TrendiShop/assets/87107030/a5f472cc-ef10-477c-9203-8f33c4e038fd)
+
+![trendishop-7](https://github.com/Abhisheksabhi33/TrendiShop/assets/87107030/d217f0b8-ba9e-4aa4-b50a-43a6127deed3)
+
+![trendishop-8](https://github.com/Abhisheksabhi33/TrendiShop/assets/87107030/5495f69c-4815-4e0b-92e2-001c2131c0f8)
+
+
 <h2>Technologies Used</h2>
 <ul>
   <li>Firebase (Realtime Database and Authentication)</li>
